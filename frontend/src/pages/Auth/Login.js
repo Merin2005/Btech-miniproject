@@ -7,18 +7,36 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
+
+  const EMAIL_REGEX = /^[A-Za-z][A-Za-z0-9._-]*@[A-Za-z0-9-]+\.[A-Za-z]{2,}$/;
+
+  const validateEmail = (value) => {
+    if (!value) return 'Email is required.';
+    if (/^\d/.test(value)) return 'Email cannot start with a number.';
+    if (!EMAIL_REGEX.test(value)) return 'Please enter a valid email address.';
+    return '';
+  };
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Validate email before hitting the API
+    const emailErr = validateEmail(email);
+    if (emailErr) {
+      setEmailError(emailErr);
+      return;
+    }
+    setEmailError('');
     setLoading(true);
 
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', {
-        email,
+        email: email.trim().toLowerCase(),
         password,
       });
 
@@ -48,13 +66,17 @@ const Login = () => {
 
         <form onSubmit={handleSubmit}>
           <input
-            style={styles.input}
+            style={{ ...styles.input, ...(emailError ? styles.inputError : {}) }}
             type="email"
             placeholder="Email address"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (emailError) setEmailError(validateEmail(e.target.value));
+            }}
             required
           />
+          {emailError && <p style={styles.fieldError}>{emailError}</p>}
           <input
             style={styles.input}
             type="password"
@@ -158,6 +180,16 @@ const styles = {
     color: '#4f46e5',
     textDecoration: 'none',
     fontWeight: 'bold',
+  },
+  fieldError: {
+    color: '#ef4444',
+    fontSize: '12px',
+    marginTop: '-10px',
+    marginBottom: '10px',
+  },
+  inputError: {
+    border: '1.5px solid #ef4444',
+    backgroundColor: '#fff5f5',
   },
 };
 

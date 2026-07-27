@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+const EMAIL_REGEX = /^[A-Za-z][A-Za-z0-9._-]*@[A-Za-z0-9-]+\.[A-Za-z]{2,}$/;
+
 // =====================
 // REGISTER
 // POST /api/auth/register
@@ -12,6 +14,18 @@ const register = async (req, res) => {
 
   if (!full_name || !email || !phone || !password || !role) {
     return res.status(400).json({ message: 'All fields are required.' });
+  }
+
+  if (!/^\d{10}$/.test(phone)) {
+    return res.status(400).json({ message: 'Phone number must be exactly 10 digits.' });
+  }
+
+  const normalizedEmail = email.trim().toLowerCase();
+  if (/^\d/.test(normalizedEmail)) {
+    return res.status(400).json({ message: 'Email cannot start with a number.' });
+  }
+  if (!EMAIL_REGEX.test(normalizedEmail)) {
+    return res.status(400).json({ message: 'Please enter a valid email address.' });
   }
 
 if (role !== 'customer' && role !== 'worker' && role !== 'admin') {
@@ -25,7 +39,7 @@ if (role !== 'customer' && role !== 'worker' && role !== 'admin') {
   try {
     const emailCheck = await pool.query(
       'SELECT id FROM users WHERE email = $1',
-      [email]
+      [normalizedEmail]
     );
     if (emailCheck.rows.length > 0) {
       return res.status(400).json({ message: 'Email already registered.' });
@@ -46,7 +60,7 @@ if (role !== 'customer' && role !== 'worker' && role !== 'admin') {
       `INSERT INTO users (full_name, email, phone, password_hash, role, address)
        VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING id, full_name, email, phone, role, address, created_at`,
-      [full_name, email, phone, password_hash, role, address || null]
+      [full_name, normalizedEmail, phone, password_hash, role, address || null]
     );
 
     const user = newUser.rows[0];
@@ -89,11 +103,19 @@ const login = async (req, res) => {
     return res.status(400).json({ message: 'Email and password are required.' });
   }
 
+  const normalizedEmail = email.trim().toLowerCase();
+  if (/^\d/.test(normalizedEmail)) {
+    return res.status(400).json({ message: 'Email cannot start with a number.' });
+  }
+  if (!EMAIL_REGEX.test(normalizedEmail)) {
+    return res.status(400).json({ message: 'Please enter a valid email address.' });
+  }
+
   try {
     // Step 2: Find user by email
     const result = await pool.query(
       'SELECT * FROM users WHERE email = $1',
-      [email]
+      [normalizedEmail]
     );
 
     if (result.rows.length === 0) {

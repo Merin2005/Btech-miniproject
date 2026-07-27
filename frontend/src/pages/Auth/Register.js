@@ -16,21 +16,62 @@ const Register = () => {
   });
 
   const [error, setError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const EMAIL_REGEX = /^[A-Za-z][A-Za-z0-9._-]*@[A-Za-z0-9-]+\.[A-Za-z]{2,}$/;
+
+  const validateEmail = (value) => {
+    if (!value) return 'Email is required.';
+    if (/^\d/.test(value)) return 'Email cannot start with a number.';
+    if (!EMAIL_REGEX.test(value)) return 'Please enter a valid email address.';
+    return '';
+  };
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === 'email') {
+      setFormData({ ...formData, email: value });
+      setEmailError(validateEmail(value));
+      return;
+    }
+    // Strip non-digits from phone field as user types
+    if (name === 'phone') {
+      const digitsOnly = value.replace(/\D/g, '').slice(0, 10);
+      setFormData({ ...formData, phone: digitsOnly });
+      if (digitsOnly.length > 0 && digitsOnly.length < 10) {
+        setPhoneError('Phone number must be exactly 10 digits.');
+      } else {
+        setPhoneError('');
+      }
+      return;
+    }
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Email validation
+    const emailErr = validateEmail(formData.email);
+    if (emailErr) {
+      setEmailError(emailErr);
+      return;
+    }
+    // Final phone validation before submit
+    if (!/^\d{10}$/.test(formData.phone)) {
+      setPhoneError('Phone number must be exactly 10 digits.');
+      return;
+    }
     setLoading(true);
 
     try {
       // Convert skills string to array for workers
       const payload = {
         ...formData,
+        email: formData.email.trim().toLowerCase(),
         skills: formData.role === 'worker'
           ? formData.skills.split(',').map(s => s.trim())
           : [],
@@ -67,7 +108,7 @@ const Register = () => {
             required
           />
           <input
-            style={styles.input}
+            style={{ ...styles.input, ...(emailError ? styles.inputError : {}) }}
             type="email"
             name="email"
             placeholder="Email"
@@ -75,15 +116,19 @@ const Register = () => {
             onChange={handleChange}
             required
           />
+          {emailError && <p style={styles.fieldError}>{emailError}</p>}
           <input
-            style={styles.input}
+            style={{ ...styles.input, ...(phoneError ? styles.inputError : {}) }}
             type="tel"
             name="phone"
-            placeholder="Phone Number"
+            placeholder="Phone Number (10 digits)"
             value={formData.phone}
             onChange={handleChange}
+            maxLength={10}
+            inputMode="numeric"
             required
           />
+          {phoneError && <p style={styles.fieldError}>{phoneError}</p>}
           <input
             style={styles.input}
             type="password"
@@ -213,6 +258,16 @@ const styles = {
     color: 'red',
     marginBottom: '12px',
     fontSize: '14px',
+  },
+  fieldError: {
+    color: '#ef4444',
+    fontSize: '12px',
+    marginTop: '-10px',
+    marginBottom: '10px',
+  },
+  inputError: {
+    border: '1.5px solid #ef4444',
+    backgroundColor: '#fff5f5',
   },
   link: {
     textAlign: 'center',
