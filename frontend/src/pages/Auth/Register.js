@@ -77,7 +77,7 @@ const Register = () => {
           : [],
       };
 
-      await axios.post('http://localhost:5000/api/auth/register', payload);
+      await axios.post('https://worklink-backend-31a8.onrender.com/api/auth/register', payload);
 
       alert('Registration successful! Please login.');
       navigate('/login');
