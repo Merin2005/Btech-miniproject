@@ -32,7 +32,7 @@ const JobManage = () => {
 
   const fetchAll = async () => {
     try {
-      const jobRes = await axios.get(`http://localhost:5000/api/jobs/${jobId}`, {
+      const jobRes = await axios.get(`https://worklink-backend-31a8.onrender.com/api/jobs/${jobId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setJob(jobRes.data.job);
@@ -42,7 +42,7 @@ const JobManage = () => {
       if (status === 'open') {
         try {
           const appRes = await axios.get(
-            `http://localhost:5000/api/applications/${jobId}/applicants`,
+            `https://worklink-backend-31a8.onrender.com/api/applications/${jobId}/applicants`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           setApplicants(appRes.data.applicants || []);
@@ -53,21 +53,21 @@ const JobManage = () => {
         // Fetch assigned worker info
         try {
           const workerRes = await axios.get(
-            `http://localhost:5000/api/applications/${jobId}/assigned-worker`,
+            `https://worklink-backend-31a8.onrender.com/api/applications/${jobId}/assigned-worker`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           setAssignedWorker(workerRes.data.worker || null);
         } catch (e) {}
 
         try {
-          const otpRes = await axios.get(`http://localhost:5000/api/otp/${jobId}`, {
+          const otpRes = await axios.get(`https://worklink-backend-31a8.onrender.com/api/otp/${jobId}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           setOtp(otpRes.data.otp);
         } catch (e) {}
 
         try {
-          const payRes = await axios.get(`http://localhost:5000/api/payments/${jobId}`, {
+          const payRes = await axios.get(`https://worklink-backend-31a8.onrender.com/api/payments/${jobId}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           setPayment(payRes.data.payment);
@@ -76,7 +76,7 @@ const JobManage = () => {
         // Fetch entry/exit times for completed jobs
         if (status === 'completed') {
           try {
-            const compRes = await axios.get(`http://localhost:5000/api/completion/${jobId}`, {
+            const compRes = await axios.get(`https://worklink-backend-31a8.onrender.com/api/completion/${jobId}`, {
               headers: { Authorization: `Bearer ${token}` },
             });
             setCompletion(compRes.data.completion);
@@ -85,7 +85,7 @@ const JobManage = () => {
 
         let noShowData = null;
         try {
-          const nsRes = await axios.get(`http://localhost:5000/api/emergency/check/${jobId}`, {
+          const nsRes = await axios.get(`https://worklink-backend-31a8.onrender.com/api/emergency/check/${jobId}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           noShowData = nsRes.data;
@@ -94,7 +94,7 @@ const JobManage = () => {
 
         let currentBackups = [];
         try {
-          const bkRes = await axios.get(`http://localhost:5000/api/emergency/${jobId}/backups`, {
+          const bkRes = await axios.get(`https://worklink-backend-31a8.onrender.com/api/emergency/${jobId}/backups`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           currentBackups = bkRes.data.backup_workers || [];
@@ -105,13 +105,13 @@ const JobManage = () => {
         if (noShowData?.is_late && currentBackups.length === 0) {
           try {
             await axios.post(
-              `http://localhost:5000/api/emergency/trigger/${jobId}`,
+              `https://worklink-backend-31a8.onrender.com/api/emergency/trigger/${jobId}`,
               {},
               { headers: { Authorization: `Bearer ${token}` } }
             );
             // Reload from getEmergencyBackups — guaranteed to have worker_id + status fields
             const reloadBk = await axios.get(
-              `http://localhost:5000/api/emergency/${jobId}/backups`,
+              `https://worklink-backend-31a8.onrender.com/api/emergency/${jobId}/backups`,
               { headers: { Authorization: `Bearer ${token}` } }
             );
             setBackups(reloadBk.data.backup_workers || []);
@@ -127,7 +127,7 @@ const JobManage = () => {
 
   const refreshOtp = async () => {
     try {
-      const otpRes = await axios.get(`http://localhost:5000/api/otp/${jobId}`, {
+      const otpRes = await axios.get(`https://worklink-backend-31a8.onrender.com/api/otp/${jobId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setOtp(otpRes.data.otp);
@@ -141,7 +141,7 @@ const JobManage = () => {
     if (!window.confirm(`Select ${workerName} for this job?`)) return;
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/applications/${jobId}/select/${workerId}`,
+        `https://worklink-backend-31a8.onrender.com/api/applications/${jobId}/select/${workerId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -156,7 +156,7 @@ const JobManage = () => {
   const deleteJob = async () => {
     if (!window.confirm('Delete this job?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/jobs/${jobId}`, {
+      await axios.delete(`https://worklink-backend-31a8.onrender.com/api/jobs/${jobId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Job deleted!');
@@ -169,13 +169,13 @@ const JobManage = () => {
   const triggerEmergency = async () => {
     try {
       await axios.post(
-        `http://localhost:5000/api/emergency/trigger/${jobId}`,
+        `https://worklink-backend-31a8.onrender.com/api/emergency/trigger/${jobId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
       // Always reload from getEmergencyBackups for correct worker_id + status fields
       const res = await axios.get(
-        `http://localhost:5000/api/emergency/${jobId}/backups`,
+        `https://worklink-backend-31a8.onrender.com/api/emergency/${jobId}/backups`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert(res.data.message);
@@ -189,7 +189,7 @@ const JobManage = () => {
     if (!window.confirm(`Assign ${workerName} as backup worker?`)) return;
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/emergency/${jobId}/choose/${workerId}`,
+        `https://worklink-backend-31a8.onrender.com/api/emergency/${jobId}/choose/${workerId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -204,7 +204,7 @@ const JobManage = () => {
     if (!window.confirm('Are you sure you want to cancel this job?')) return;
     try {
       await axios.post(
-        `http://localhost:5000/api/emergency/${jobId}/cancel`,
+        `https://worklink-backend-31a8.onrender.com/api/emergency/${jobId}/cancel`,
         {}, { headers: { Authorization: `Bearer ${token}` } }
       );
       alert('Job cancelled.');
@@ -217,7 +217,7 @@ const JobManage = () => {
   const chooseWait = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/emergency/${jobId}/wait`,
+        `https://worklink-backend-31a8.onrender.com/api/emergency/${jobId}/wait`,
         {}, { headers: { Authorization: `Bearer ${token}` } }
       );
       setNoShow(prev => ({
@@ -234,12 +234,12 @@ const JobManage = () => {
   const payWorker = async () => {
     try {
       try {
-        await axios.post('http://localhost:5000/api/payments/initiate',
+        await axios.post('https://worklink-backend-31a8.onrender.com/api/payments/initiate',
           { job_id: jobId, amount: job.rate },
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } catch (e) {}
-      await axios.put(`http://localhost:5000/api/payments/${jobId}/sent`, {},
+      await axios.put(`https://worklink-backend-31a8.onrender.com/api/payments/${jobId}/sent`, {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert('Payment marked as sent!');
@@ -251,7 +251,7 @@ const JobManage = () => {
 
   const rateWorker = async () => {
     try {
-      await axios.post(`http://localhost:5000/api/ratings/${jobId}`,
+      await axios.post(`https://worklink-backend-31a8.onrender.com/api/ratings/${jobId}`,
         { score: ratingScore, review: ratingReview },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -272,7 +272,7 @@ const JobManage = () => {
     if (!reason) return;
     const description = prompt('Provide more details about the dispute:');
     try {
-      await axios.post(`http://localhost:5000/api/disputes/${jobId}`,
+      await axios.post(`https://worklink-backend-31a8.onrender.com/api/disputes/${jobId}`,
         { reason, description: description || reason },
         { headers: { Authorization: `Bearer ${token}` } }
       );

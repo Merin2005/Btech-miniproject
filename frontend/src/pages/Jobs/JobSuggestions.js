@@ -23,7 +23,7 @@ const JobSuggestions = () => {
 
   const fetchJob = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/jobs/${jobId}`, {
+      const res = await axios.get(`https://worklink-backend-31a8.onrender.com/api/jobs/${jobId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setJob(res.data.job);
@@ -35,7 +35,7 @@ const JobSuggestions = () => {
   const fetchSuggestions = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/suggestions/workers/${jobId}`,
+        `https://worklink-backend-31a8.onrender.com/api/suggestions/workers/${jobId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setWorkers(res.data.suggested_workers || []);

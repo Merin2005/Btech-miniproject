@@ -19,7 +19,7 @@ const DisputeChat = () => {
   useEffect(() => {
     fetchData();
 
-    socketRef.current = io('http://localhost:5000');
+    socketRef.current = io('https://worklink-backend-31a8.onrender.com');
     socketRef.current.emit('join_dispute_room', disputeId);
     socketRef.current.on('dispute_message', (msg) => {
       setMessages((prev) => {
@@ -44,12 +44,12 @@ const DisputeChat = () => {
       // Fetch dispute details
       let disputeData = null;
       if (user?.role === 'admin') {
-        const res = await axios.get('http://localhost:5000/api/admin/disputes', {
+        const res = await axios.get('https://worklink-backend-31a8.onrender.com/api/admin/disputes', {
           headers: { Authorization: `Bearer ${token}` },
         });
         disputeData = (res.data.disputes || []).find((d) => d.id === disputeId);
       } else {
-        const res = await axios.get('http://localhost:5000/api/disputes/my-disputes', {
+        const res = await axios.get('https://worklink-backend-31a8.onrender.com/api/disputes/my-disputes', {
           headers: { Authorization: `Bearer ${token}` },
         });
         disputeData = (res.data.disputes || []).find((d) => d.id === disputeId);
@@ -58,7 +58,7 @@ const DisputeChat = () => {
 
       // Fetch messages
       const msgRes = await axios.get(
-        `http://localhost:5000/api/dispute-chat/${disputeId}`,
+        `https://worklink-backend-31a8.onrender.com/api/dispute-chat/${disputeId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMessages(msgRes.data.messages || []);
@@ -73,7 +73,7 @@ const DisputeChat = () => {
     if (!newMessage.trim()) return;
     try {
       await axios.post(
-        `http://localhost:5000/api/dispute-chat/${disputeId}`,
+        `https://worklink-backend-31a8.onrender.com/api/dispute-chat/${disputeId}`,
         { message: newMessage.trim() },
         { headers: { Authorization: `Bearer ${token}` } }
       );

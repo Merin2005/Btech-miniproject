@@ -18,7 +18,7 @@ const Chat = () => {
 
   useEffect(() => {
     // Create socket per component instance (not module-level)
-    socketRef.current = io('http://localhost:5000');
+    socketRef.current = io('https://worklink-backend-31a8.onrender.com');
     socketRef.current.emit('join_room', jobId);
 
     fetchData();
@@ -45,13 +45,13 @@ const Chat = () => {
   const fetchData = async () => {
     try {
       // Fetch job info
-      const jobRes = await axios.get(`http://localhost:5000/api/jobs/${jobId}`, {
+      const jobRes = await axios.get(`https://worklink-backend-31a8.onrender.com/api/jobs/${jobId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setJob(jobRes.data.job);
 
       // Fetch messages
-      const msgRes = await axios.get(`http://localhost:5000/api/chat/${jobId}`, {
+      const msgRes = await axios.get(`https://worklink-backend-31a8.onrender.com/api/chat/${jobId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessages(msgRes.data.messages || []);
@@ -62,7 +62,7 @@ const Chat = () => {
         // Fetch assigned worker info
         try {
           const workerRes = await axios.get(
-            `http://localhost:5000/api/applications/${jobId}/assigned-worker`,
+            `https://worklink-backend-31a8.onrender.com/api/applications/${jobId}/assigned-worker`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           setOtherPerson(workerRes.data.worker);

@@ -22,7 +22,7 @@ const WorkerProfilePage = () => {
   const fetchAll = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('http://localhost:5000/api/workers/profile', {
+      const res = await axios.get('https://worklink-backend-31a8.onrender.com/api/workers/profile', {
         headers: { Authorization: 'Bearer ' + token },
       });
       const p = res.data.profile;
@@ -30,7 +30,7 @@ const WorkerProfilePage = () => {
       setForm({ full_name: p.full_name||'', phone: p.phone||'', bio: p.bio||'', hourly_rate: p.hourly_rate||'', skills: Array.isArray(p.skills)?p.skills:[] });
       const wid = p.user_id || user?.id;
       try {
-        const rat = await axios.get('http://localhost:5000/api/ratings/worker/' + wid, { headers: { Authorization: 'Bearer ' + token } });
+        const rat = await axios.get('https://worklink-backend-31a8.onrender.com/api/ratings/worker/' + wid, { headers: { Authorization: 'Bearer ' + token } });
         setRatings(rat.data.ratings || []);
       } catch(e) {}
     } catch(err) { console.error(err.message); }
@@ -53,7 +53,7 @@ const WorkerProfilePage = () => {
     setErrors({});
     setSaving(true);
     try {
-      await axios.put('http://localhost:5000/api/workers/profile',
+      await axios.put('https://worklink-backend-31a8.onrender.com/api/workers/profile',
         { full_name: form.full_name, phone: form.phone, bio: form.bio, hourly_rate: form.hourly_rate===''?null:Number(form.hourly_rate), skills: form.skills },
         { headers: { Authorization: 'Bearer ' + token } }
       );

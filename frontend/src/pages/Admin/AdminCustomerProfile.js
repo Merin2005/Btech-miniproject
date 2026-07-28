@@ -25,20 +25,20 @@ const AdminCustomerProfile = () => {
   const fetchAll = async () => {
     try {
       // Get all users from admin endpoint and find this one
-      const usersRes = await axios.get('http://localhost:5000/api/admin/users', {
+      const usersRes = await axios.get('https://worklink-backend-31a8.onrender.com/api/admin/users', {
         headers: { Authorization: `Bearer ${token}` },
       });
       const found = (usersRes.data.users || []).find((u) => u.id === userId);
       setCustomer(found || null);
 
       // Get all jobs and filter by this customer
-      const jobsRes = await axios.get('http://localhost:5000/api/admin/jobs', {
+      const jobsRes = await axios.get('https://worklink-backend-31a8.onrender.com/api/admin/jobs', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setJobs((jobsRes.data.jobs || []).filter((j) => j.customer_id === userId));
 
       // Get disputes involving this customer
-      const disputesRes = await axios.get('http://localhost:5000/api/admin/disputes', {
+      const disputesRes = await axios.get('https://worklink-backend-31a8.onrender.com/api/admin/disputes', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setDisputes(

@@ -59,7 +59,7 @@ const uploadPortfolioPhoto = async (req, res) => {
     const workerProfileId = profileResult.rows[0].id;
 
     // Build the photo URL that can be accessed from frontend
-    const photo_url = `http://localhost:5000/uploads/${req.file.filename}`;
+    const photo_url = `https://worklink-backend-31a8.onrender.com/uploads/${req.file.filename}`;
 
     // Save to portfolio table
     const result = await pool.query(

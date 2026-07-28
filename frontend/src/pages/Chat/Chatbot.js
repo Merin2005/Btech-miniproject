@@ -108,7 +108,7 @@ const Chatbot = () => {
       } else {
         // Call backend which calls Groq
         const res = await axios.post(
-          'http://localhost:5000/api/chatbot/reply',
+          'https://worklink-backend-31a8.onrender.com/api/chatbot/reply',
           {
             message: userText,
             history: updatedMessages,

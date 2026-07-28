@@ -19,10 +19,10 @@ const BondStatus = () => {
   const fetchAll = async () => {
     try {
       const [bondRes, noShowRes] = await Promise.all([
-        axios.get(`http://localhost:5000/api/bonds/${jobId}`, {
+        axios.get(`https://worklink-backend-31a8.onrender.com/api/bonds/${jobId}`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        axios.get(`http://localhost:5000/api/emergency/check/${jobId}`, {
+        axios.get(`https://worklink-backend-31a8.onrender.com/api/emergency/check/${jobId}`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
@@ -38,7 +38,7 @@ const BondStatus = () => {
   const triggerEmergency = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/emergency/trigger/${jobId}`,
+        `https://worklink-backend-31a8.onrender.com/api/emergency/trigger/${jobId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -52,7 +52,7 @@ const BondStatus = () => {
     if (!window.confirm('Are you sure? This will mark the worker as no-show.')) return;
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/bonds/${jobId}/forfeit`,
+        `https://worklink-backend-31a8.onrender.com/api/bonds/${jobId}/forfeit`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -178,7 +178,7 @@ const BondStatus = () => {
                     onClick={async () => {
                       try {
                         const res = await axios.put(
-                          `http://localhost:5000/api/emergency/${jobId}/choose/${worker.id}`,
+                          `https://worklink-backend-31a8.onrender.com/api/emergency/${jobId}/choose/${worker.id}`,
                           {},
                           { headers: { Authorization: `Bearer ${token}` } }
                         );

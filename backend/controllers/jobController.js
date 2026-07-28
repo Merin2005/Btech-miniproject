@@ -21,7 +21,7 @@ const postJob = async (req, res) => {
   } = req.body;
 
   const photoUrl = req.file
-    ? `http://localhost:5000/uploads/${req.file.filename}`
+    ? `https://worklink-backend-31a8.onrender.com/uploads/${req.file.filename}`
     : null;
 
   try {

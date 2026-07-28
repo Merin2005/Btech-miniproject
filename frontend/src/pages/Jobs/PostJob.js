@@ -75,7 +75,7 @@ const PostJob = () => {
         data.append('photo', photo);
       }
 
-      const res = await axios.post('http://localhost:5000/api/jobs', data, {
+      const res = await axios.post('https://worklink-backend-31a8.onrender.com/api/jobs', data, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

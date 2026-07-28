@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { useAuth } from '../../context/AuthContext';
 
-const adminSocket = io('http://localhost:5000');
+const adminSocket = io('https://worklink-backend-31a8.onrender.com');
 
 const AdminDashboard = () => {
   const { user, token, logout } = useAuth();
@@ -45,7 +45,7 @@ const AdminDashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/admin/stats', {
+      const res = await axios.get('https://worklink-backend-31a8.onrender.com/api/admin/stats', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setStats(res.data.stats);
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/admin/users', {
+      const res = await axios.get('https://worklink-backend-31a8.onrender.com/api/admin/users', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data.users);
@@ -67,7 +67,7 @@ const AdminDashboard = () => {
 
   const fetchJobs = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/admin/jobs', {
+      const res = await axios.get('https://worklink-backend-31a8.onrender.com/api/admin/jobs', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setJobs(res.data.jobs);
@@ -78,7 +78,7 @@ const AdminDashboard = () => {
 
   const fetchDisputes = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/admin/disputes', {
+      const res = await axios.get('https://worklink-backend-31a8.onrender.com/api/admin/disputes', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setDisputes(res.data.disputes);
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
 
   const fetchActions = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/admin/actions', {
+      const res = await axios.get('https://worklink-backend-31a8.onrender.com/api/admin/actions', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setActions(res.data.actions);
@@ -103,7 +103,7 @@ const AdminDashboard = () => {
     if (!reason) return;
     try {
       await axios.put(
-        `http://localhost:5000/api/admin/users/${userId}/ban`,
+        `https://worklink-backend-31a8.onrender.com/api/admin/users/${userId}/ban`,
         { reason },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -121,7 +121,7 @@ const AdminDashboard = () => {
     if (!window.confirm(`Unban ${userName}?`)) return;
     try {
       await axios.put(
-        `http://localhost:5000/api/admin/users/${userId}/unban`,
+        `https://worklink-backend-31a8.onrender.com/api/admin/users/${userId}/unban`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -140,7 +140,7 @@ const AdminDashboard = () => {
     if (!reason) return;
     try {
       await axios.put(
-        `http://localhost:5000/api/admin/users/${userId}/warn`,
+        `https://worklink-backend-31a8.onrender.com/api/admin/users/${userId}/warn`,
         { reason },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -159,7 +159,7 @@ const AdminDashboard = () => {
     if (!resolution) return;
     try {
       await axios.put(
-        `http://localhost:5000/api/admin/disputes/${disputeId}/resolve`,
+        `https://worklink-backend-31a8.onrender.com/api/admin/disputes/${disputeId}/resolve`,
         { resolution },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -581,7 +581,7 @@ const AdminDashboard = () => {
                         onClick={async () => {
                           if (!window.confirm('Reopen this dispute?')) return;
                           try {
-                            await axios.put(`http://localhost:5000/api/disputes/${dispute.id}/reopen`, {}, { headers: { Authorization: `Bearer ${token}` } });
+                            await axios.put(`https://worklink-backend-31a8.onrender.com/api/disputes/${dispute.id}/reopen`, {}, { headers: { Authorization: `Bearer ${token}` } });
                             fetchDisputes();
                           } catch(e) { alert('Failed to reopen dispute.'); }
                         }}>

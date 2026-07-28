@@ -31,7 +31,7 @@ const EditJob = () => {
 
   const fetchJob = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/jobs/${jobId}`);
+      const res = await axios.get(`https://worklink-backend-31a8.onrender.com/api/jobs/${jobId}`);
       const job = res.data.job;
       setForm({
         title: job.title,
@@ -57,7 +57,7 @@ const EditJob = () => {
     setSaving(true);
     try {
       await axios.put(
-        `http://localhost:5000/api/jobs/${jobId}`,
+        `https://worklink-backend-31a8.onrender.com/api/jobs/${jobId}`,
         form,
         { headers: { Authorization: `Bearer ${token}` } }
       );

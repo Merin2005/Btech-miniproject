@@ -16,10 +16,10 @@ const WorkerProfile = () => {
 
   const fetchWorker = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/workers/${userId}`);
+      const res = await axios.get(`https://worklink-backend-31a8.onrender.com/api/workers/${userId}`);
       setWorker(res.data.worker);
       try {
-        const rRes = await axios.get(`http://localhost:5000/api/ratings/worker/${userId}`);
+        const rRes = await axios.get(`https://worklink-backend-31a8.onrender.com/api/ratings/worker/${userId}`);
         setRatings(rRes.data.ratings || []);
       } catch (e) {}
     } catch (err) {

@@ -25,7 +25,7 @@ const CustomerDashboard = () => {
     if (!user) return;
     if (user.role !== 'customer') { navigate('/login'); return; }
     fetchMyJobs();
-    axios.get('http://localhost:5000/api/disputes/my-disputes',
+    axios.get('https://worklink-backend-31a8.onrender.com/api/disputes/my-disputes',
       { headers: { Authorization: `Bearer ${token}` } }
     ).then(r => setMyDisputes(r.data.disputes || [])).catch(() => {});
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -36,7 +36,7 @@ const CustomerDashboard = () => {
     if (!user) return;
     let socket;
     import('socket.io-client').then(({ io }) => {
-      socket = io('http://localhost:5000');
+      socket = io('https://worklink-backend-31a8.onrender.com');
       socket.emit('join_user_room', user.id);
       socket.on('system_notification', (notif) => {
         // If banned, show alert then force logout immediately
@@ -62,7 +62,7 @@ const CustomerDashboard = () => {
   const fetchMyJobs = async () => {
     try {
       const res = await axios.get(
-        'http://localhost:5000/api/jobs/customer/my-jobs',
+        'https://worklink-backend-31a8.onrender.com/api/jobs/customer/my-jobs',
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setJobs(res.data.jobs);
@@ -72,7 +72,7 @@ const CustomerDashboard = () => {
       await Promise.all(completed.map(async (j) => {
         try {
           const tr = await axios.get(
-            `http://localhost:5000/api/completion/${j.id}`,
+            `https://worklink-backend-31a8.onrender.com/api/completion/${j.id}`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           if (tr.data.completion) timelines[j.id] = tr.data.completion;
@@ -432,7 +432,7 @@ const DisputeChatPanel = ({ disputeId, token, currentUserId }) => {
   useEffect(() => {
     fetchMessages();
     import('socket.io-client').then(({ io }) => {
-      socketRef.current = io('http://localhost:5000');
+      socketRef.current = io('https://worklink-backend-31a8.onrender.com');
       socketRef.current.emit('join_dispute_room', disputeId);
       socketRef.current.on('dispute_message', (msg) => {
         setMessages((prev) => {
@@ -450,7 +450,7 @@ const DisputeChatPanel = ({ disputeId, token, currentUserId }) => {
 
   const fetchMessages = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/dispute-chat/${disputeId}`, { headers: { Authorization: `Bearer ${token}` } });
+      const res = await axios.get(`https://worklink-backend-31a8.onrender.com/api/dispute-chat/${disputeId}`, { headers: { Authorization: `Bearer ${token}` } });
       setMessages(res.data.messages || []);
     } catch(e) {}
   };
@@ -459,7 +459,7 @@ const DisputeChatPanel = ({ disputeId, token, currentUserId }) => {
     if (!input.trim() || sending) return;
     setSending(true);
     try {
-      await axios.post(`http://localhost:5000/api/dispute-chat/${disputeId}`, { message: input.trim() }, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.post(`https://worklink-backend-31a8.onrender.com/api/dispute-chat/${disputeId}`, { message: input.trim() }, { headers: { Authorization: `Bearer ${token}` } });
       setInput('');
     } catch(e) { alert('Failed to send message.'); }
     finally { setSending(false); }

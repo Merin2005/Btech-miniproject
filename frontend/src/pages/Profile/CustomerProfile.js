@@ -23,7 +23,7 @@ const CustomerProfile = () => {
   const fetchProfile = async () => {
     try {
       const res = await axios.get(
-        'http://localhost:5000/api/auth/profile',
+        'https://worklink-backend-31a8.onrender.com/api/auth/profile',
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setProfile(res.data.user);
@@ -42,7 +42,7 @@ const CustomerProfile = () => {
   const fetchMyJobs = async () => {
     try {
       const res = await axios.get(
-        'http://localhost:5000/api/jobs/customer/my-jobs',
+        'https://worklink-backend-31a8.onrender.com/api/jobs/customer/my-jobs',
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setJobs(res.data.jobs);
@@ -55,7 +55,7 @@ const CustomerProfile = () => {
     setSaving(true);
     try {
       await axios.put(
-        'http://localhost:5000/api/auth/profile',
+        'https://worklink-backend-31a8.onrender.com/api/auth/profile',
         form,
         { headers: { Authorization: `Bearer ${token}` } }
       );

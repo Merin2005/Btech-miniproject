@@ -20,12 +20,12 @@ const JobDetail = () => {
 
   const fetchJob = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/jobs/${jobId}`);
+      const res = await axios.get(`https://worklink-backend-31a8.onrender.com/api/jobs/${jobId}`);
       setJob(res.data.job);
       if (user && user.role === 'customer') {
         try {
           const sugRes = await axios.get(
-            `http://localhost:5000/api/suggestions/workers/${jobId}`,
+            `https://worklink-backend-31a8.onrender.com/api/suggestions/workers/${jobId}`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           setSuggestions(sugRes.data.suggested_workers);
@@ -37,7 +37,7 @@ const JobDetail = () => {
       if (user && user.role === 'worker') {
         try {
           const myApps = await axios.get(
-            'http://localhost:5000/api/applications/my-applications',
+            'https://worklink-backend-31a8.onrender.com/api/applications/my-applications',
             { headers: { Authorization: `Bearer ${token}` } }
           );
           const existing = (myApps.data.applications || []).find(a => a.job_id === jobId);
@@ -55,7 +55,7 @@ const JobDetail = () => {
     setApplying(true);
     try {
       await axios.post(
-        `http://localhost:5000/api/applications/${jobId}/apply`,
+        `https://worklink-backend-31a8.onrender.com/api/applications/${jobId}/apply`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

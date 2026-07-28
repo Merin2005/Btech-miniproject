@@ -103,7 +103,7 @@ const completeJob = async (req, res) => {
       return res.status(400).json({ message: 'Please upload a completion photo.' });
     }
 
-    const completionPhotoUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+    const completionPhotoUrl = `https://worklink-backend-31a8.onrender.com/uploads/${req.file.filename}`;
     const exitTime = new Date();
 
     // Record exit time and completion photo

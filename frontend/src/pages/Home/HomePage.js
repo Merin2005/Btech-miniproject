@@ -39,7 +39,7 @@ const HomePage = () => {
 
   const fetchJobs = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/jobs');
+      const res = await axios.get('https://worklink-backend-31a8.onrender.com/api/jobs');
       setJobs(res.data.jobs);
     } catch (err) {
       console.error('Failed to fetch jobs:', err.message);

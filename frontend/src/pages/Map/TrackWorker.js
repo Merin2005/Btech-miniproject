@@ -14,7 +14,7 @@ import { useAuth } from '../../context/AuthContext';
 import { io } from 'socket.io-client';
 import LiveTrackingMap from './LiveTrackingMap';
 
-const API = 'http://localhost:5000';
+const API = 'https://worklink-backend-31a8.onrender.com';
 
 // ── Only used as label text — NOT for placing the map pin ────────────────────
 // The pin is placed from raw lat/lng coordinates, never from geocoding
