@@ -31,12 +31,14 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'https://worklink-frontend-9as1.onrender.com',
     methods: ['GET', 'POST'],
   },
 });
 
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({
+  origin: 'https://worklink-frontend-9as1.onrender.com'
+}));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
