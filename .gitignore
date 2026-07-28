@@ -10,7 +10,8 @@ frontend/node_modules/
 *.log
 
 # Uploaded files (optional)
-backend/uploads/
+backend/uploads/*
+!backend/uploads/.gitkeep
 
 # Build folders
 build/
